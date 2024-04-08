@@ -6,6 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Adding Service to Add App Controllers
 builder.Services.AddControllers();
 
+// Adding Cors Service
+builder.Services.AddCors();
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -18,6 +21,16 @@ builder.Services.AddDbContext<DataContext>(obj =>
 });
 
 var app = builder.Build();
+
+// Adding default cors
+app.UseCors(obj =>
+{
+    // allow all
+    obj.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+
+    // allow specific
+    // obj.WithHeaders(["Authentication", "ETC"]).WithMethods(["GET"]).WithOrigins(["http://localhost:3000"]);
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
