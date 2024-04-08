@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.Data;
 using API.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -19,9 +20,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<AppUser>> GetUsers()
+        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
-            return _context.Users.ToList();
+            return await _context.Users.ToListAsync();
         }
 
         [HttpGet("{id}")]
@@ -31,13 +32,13 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public ActionResult<bool> CreateUser()
+        public async Task<ActionResult<bool>> CreateUser()
         {
             try
             {
-                _context.Users.Add(new AppUser("ahsan"));
+                await _context.Users.AddAsync(new AppUser("ahsan"));
 
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return true;
             }
